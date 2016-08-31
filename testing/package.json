@@ -1,0 +1,24 @@
+{
+  "name": "@gussamer/testing",
+  "version": "1.1.1",
+  "description": "first npm module done for how-to-npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "testing"
+  ],
+  "author": "Angus Alves",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gussamer/testing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gussamer/testing/issues"
+  },
+  "homepage": "https://github.com/gussamer/testing#readme"
+}
