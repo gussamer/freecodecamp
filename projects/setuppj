@@ -1,33 +1,71 @@
 #!/usr/bin/env bash
-if [ $# -ne 3 ]; then
-    echo $0: usage: setuppj [Github User Name] [Project Name] [Project Description]
-    echo Enter your github user name
+if [ $# -ne 4 ]; then
+    echo "$0: usage: setuppj [Github User Name] [Project Name] [Project Description] [node|python]"
+    echo "[?] Enter your github user name"
     read gname
-    echo Enter your new project name
+    echo "[?] Enter your new project name"
     read pname
-    echo "Enter a description for $pname"
+    echo "[?] Enter a description for $pname"
     read desc
+    echo "[?] Is $gname a node or python package?(node|python)"
+    read t
 else
     gname=$1
     pname=$2
     desc=$3
+    t=$4
 fi
 mkdir $pname
 cd $pname
-echo "node_modules" > .gitignore
-echo "# $pname\n$desc\n" > README.md
-cp ../LICENSE.md LICENSE.md
-cp ../tempserv.js server.js
-npm init
-node ../writenode.js
-npm install express --save
-curl -u $gname https://api.github.com/user/repos -d '{"name":"'$pname'"}'
-git init
-heroku create $pname
-heroku git:remote -a $pname
-git remote add origin https://github.com/$gname/$pname.git
-git add --all
-git commit -m "initial setup commit"
-git push -u origin master
-git push heroku master
-wget -qO- https://$pname.herokuapp.com/ | echo "\n"
+echo "# $pname $desc" > README.md
+if [ $t == "node" ]; then
+    echo "node_modules" > .gitignore
+    cp ../templates/LICENSE.md LICENSE.md
+    cp ../templates/tempserv.js server.js
+    npm init
+    node ../scripts/writenode.js
+    echo "[?] Install expressjs?"
+    echo "[*] Y(y)|N(n)"
+    read ex
+    if [ $ex -eq "y" ]; then
+        npm install express --save
+    fi
+elif [ $t == "python" ]; then
+    echo "# $pname: $desc" >> $pname.py
+    echo "print 'Hello World'" >> $pname.py
+    pip-init
+    python ../scripts/pythonwrastlin.py
+else
+    echo "[!] No type no setup"
+fi
+echo "[?] Setup git repo now?"
+echo "[*] Y(y)|N(n)"
+read gitit
+if [ $gitit == "y" ]; then
+    git init
+    git add --all
+    echo "[?] Enter commit message (initial setup commit)"
+    echo "[*] Y(y)|N(n)"
+    read $commess
+    if [$commess == ""]; then
+        $commess = "initial setup commit"
+    fi
+    git commit -m $commess
+fi
+echo "[?] Setup github repo now?"
+echo "[*] Y(y)|N(n)"
+read githubit
+if [ $githubit == "y" ]; then
+    curl -u $gname https://api.github.com/user/repos -d '{"name":"'$pname'"}'
+    git remote add origin https://github.com/$gname/$pname.git
+    git push -u origin master
+fi
+echo "[?] Setup Heroku app now?"
+echo "[*] Y(y)|N(n)"
+read hero
+if [ $hero == "y" ]; then
+    heroku create $pname
+    heroku git:remote -a $pname
+    git push heroku master
+    wget -qO- https://$pname.herokuapp.com/ | echo "\n"
+fi
