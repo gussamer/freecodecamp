@@ -1,0 +1,28 @@
+{
+    "name": "genpath",
+    "version": "1.0.0",
+    "description": "genetic pathfinder",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gussamer/genpath.git"
+    },
+    "keywords": [
+        "genetic",
+        "path",
+        "finder"
+    ],
+    "author": "Angus Alves",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/gussamer/genpath/issues"
+    },
+    "homepage": "https://github.com/gussamer/genpath#readme",
+    "engines": {
+        "node": "^4.4.5"
+    }
+}
