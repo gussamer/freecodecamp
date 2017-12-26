@@ -1,0 +1,8 @@
+echo "[?] Setup github repo now?"
+echo "[*] Y(y)|N(n)"
+read githubit
+if [ $githubit == "y" ]; then
+    curl -u $gname https://api.github.com/user/repos -d '{"name":"'$pname'"}'
+    git remote add origin https://github.com/$gname/$pname.git
+    git push -u origin master
+fi
